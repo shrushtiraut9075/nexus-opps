@@ -14,7 +14,7 @@ import { Logo } from "@/components/Logo";
 type Mode = "login" | "signup" | "forgot";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: Record<string, unknown>): { mode?: Mode } => ({
+  validateSearch: (search: Record<string, unknown>): { mode?: Mode | undefined } => ({
     mode: (["login", "signup", "forgot"] as const).includes(search["mode"] as Mode)
       ? (search["mode"] as Mode)
       : undefined,
@@ -245,7 +245,7 @@ function AuthPage() {
   );
 }
 
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+function Field({ label, error, children }: { label: string; error?: string | undefined; children: React.ReactNode }) {
   const id = label.toLowerCase().replace(/\s+/g, "-");
   return (
     <div className="space-y-1.5">
