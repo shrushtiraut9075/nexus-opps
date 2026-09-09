@@ -10,14 +10,25 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApplicationsRouteImport } from './routes/applications'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as DeadlinesRouteImport } from './routes/deadlines'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as RecommendedRouteImport } from './routes/recommended'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SavedRouteImport } from './routes/saved'
+import { Route as OpportunitiesIndexRouteImport } from './routes/opportunities.index'
+import { Route as OpportunitiesIdRouteImport } from './routes/opportunities.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApplicationsRoute = ApplicationsRouteImport.update({
+  id: '/applications',
+  path: '/applications',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -30,9 +41,19 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DeadlinesRoute = DeadlinesRouteImport.update({
+  id: '/deadlines',
+  path: '/deadlines',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecommendedRoute = RecommendedRouteImport.update({
+  id: '/recommended',
+  path: '/recommended',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
@@ -40,49 +61,116 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SavedRoute = SavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpportunitiesIndexRoute = OpportunitiesIndexRouteImport.update({
+  id: '/opportunities/',
+  path: '/opportunities/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OpportunitiesIdRoute = OpportunitiesIdRouteImport.update({
+  id: '/opportunities/$id',
+  path: '/opportunities/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/deadlines': typeof DeadlinesRoute
   '/onboarding': typeof OnboardingRoute
+  '/recommended': typeof RecommendedRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/saved': typeof SavedRoute
+  '/opportunities/$id': typeof OpportunitiesIdRoute
+  '/opportunities/': typeof OpportunitiesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/deadlines': typeof DeadlinesRoute
   '/onboarding': typeof OnboardingRoute
+  '/recommended': typeof RecommendedRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/saved': typeof SavedRoute
+  '/opportunities/$id': typeof OpportunitiesIdRoute
+  '/opportunities': typeof OpportunitiesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/applications': typeof ApplicationsRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/deadlines': typeof DeadlinesRoute
   '/onboarding': typeof OnboardingRoute
+  '/recommended': typeof RecommendedRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/saved': typeof SavedRoute
+  '/opportunities/$id': typeof OpportunitiesIdRoute
+  '/opportunities/': typeof OpportunitiesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/dashboard' | '/onboarding' | '/reset-password'
+  fullPaths:
+    | '/'
+    | '/applications'
+    | '/auth'
+    | '/dashboard'
+    | '/deadlines'
+    | '/onboarding'
+    | '/recommended'
+    | '/reset-password'
+    | '/saved'
+    | '/opportunities/$id'
+    | '/opportunities/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard' | '/onboarding' | '/reset-password'
+  to:
+    | '/'
+    | '/applications'
+    | '/auth'
+    | '/dashboard'
+    | '/deadlines'
+    | '/onboarding'
+    | '/recommended'
+    | '/reset-password'
+    | '/saved'
+    | '/opportunities/$id'
+    | '/opportunities'
   id:
     | '__root__'
     | '/'
+    | '/applications'
     | '/auth'
     | '/dashboard'
+    | '/deadlines'
     | '/onboarding'
+    | '/recommended'
     | '/reset-password'
+    | '/saved'
+    | '/opportunities/$id'
+    | '/opportunities/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApplicationsRoute: typeof ApplicationsRoute
   AuthRoute: typeof AuthRoute
   DashboardRoute: typeof DashboardRoute
+  DeadlinesRoute: typeof DeadlinesRoute
   OnboardingRoute: typeof OnboardingRoute
+  RecommendedRoute: typeof RecommendedRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SavedRoute: typeof SavedRoute
+  OpportunitiesIdRoute: typeof OpportunitiesIdRoute
+  OpportunitiesIndexRoute: typeof OpportunitiesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -92,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/applications': {
+      id: '/applications'
+      path: '/applications'
+      fullPath: '/applications'
+      preLoaderRoute: typeof ApplicationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -108,11 +203,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/deadlines': {
+      id: '/deadlines'
+      path: '/deadlines'
+      fullPath: '/deadlines'
+      preLoaderRoute: typeof DeadlinesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/onboarding': {
       id: '/onboarding'
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recommended': {
+      id: '/recommended'
+      path: '/recommended'
+      fullPath: '/recommended'
+      preLoaderRoute: typeof RecommendedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reset-password': {
@@ -122,15 +231,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/saved': {
+      id: '/saved'
+      path: '/saved'
+      fullPath: '/saved'
+      preLoaderRoute: typeof SavedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/opportunities/': {
+      id: '/opportunities/'
+      path: '/opportunities'
+      fullPath: '/opportunities/'
+      preLoaderRoute: typeof OpportunitiesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/opportunities/$id': {
+      id: '/opportunities/$id'
+      path: '/opportunities/$id'
+      fullPath: '/opportunities/$id'
+      preLoaderRoute: typeof OpportunitiesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApplicationsRoute: ApplicationsRoute,
   AuthRoute: AuthRoute,
   DashboardRoute: DashboardRoute,
+  DeadlinesRoute: DeadlinesRoute,
   OnboardingRoute: OnboardingRoute,
+  RecommendedRoute: RecommendedRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SavedRoute: SavedRoute,
+  OpportunitiesIdRoute: OpportunitiesIdRoute,
+  OpportunitiesIndexRoute: OpportunitiesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
