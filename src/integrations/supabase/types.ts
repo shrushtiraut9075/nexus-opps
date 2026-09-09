@@ -14,16 +14,307 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      applications: {
+        Row: {
+          applied_at: string
+          id: string
+          next_action: string | null
+          notes: string | null
+          opportunity_id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          applied_at?: string
+          id?: string
+          next_action?: string | null
+          notes?: string | null
+          opportunity_id: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          applied_at?: string
+          id?: string
+          next_action?: string | null
+          notes?: string | null
+          opportunity_id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "applications_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          is_read: boolean
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          title: string
+          type?: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          is_read?: boolean
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      opportunities: {
+        Row: {
+          application_process: string | null
+          apply_url: string | null
+          benefits: string | null
+          category: string
+          created_at: string
+          deadline: string | null
+          description: string
+          education_requirement: string | null
+          eligibility: string | null
+          experience_level: string
+          id: string
+          is_demo: boolean
+          is_premium: boolean
+          is_published: boolean
+          location: string
+          organization: string
+          required_skills: string[]
+          tags: string[]
+          title: string
+          views: number
+          work_mode: string
+        }
+        Insert: {
+          application_process?: string | null
+          apply_url?: string | null
+          benefits?: string | null
+          category: string
+          created_at?: string
+          deadline?: string | null
+          description: string
+          education_requirement?: string | null
+          eligibility?: string | null
+          experience_level?: string
+          id?: string
+          is_demo?: boolean
+          is_premium?: boolean
+          is_published?: boolean
+          location?: string
+          organization: string
+          required_skills?: string[]
+          tags?: string[]
+          title: string
+          views?: number
+          work_mode?: string
+        }
+        Update: {
+          application_process?: string | null
+          apply_url?: string | null
+          benefits?: string | null
+          category?: string
+          created_at?: string
+          deadline?: string | null
+          description?: string
+          education_requirement?: string | null
+          eligibility?: string | null
+          experience_level?: string
+          id?: string
+          is_demo?: boolean
+          is_premium?: boolean
+          is_published?: boolean
+          location?: string
+          organization?: string
+          required_skills?: string[]
+          tags?: string[]
+          title?: string
+          views?: number
+          work_mode?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          achievements: string | null
+          avatar_url: string | null
+          branch: string | null
+          cgpa: string | null
+          city: string | null
+          college: string | null
+          country: string | null
+          created_at: string
+          current_year: string | null
+          degree: string | null
+          experience_level: string | null
+          full_name: string | null
+          graduation_year: string | null
+          id: string
+          interests: string[]
+          notify_deadlines: boolean
+          notify_email: boolean
+          onboarding_completed: boolean
+          plan: string
+          preferred_industry: string | null
+          preferred_types: string[]
+          profile_public: boolean
+          projects: string | null
+          resume_name: string | null
+          resume_url: string | null
+          skills: string[]
+          target_role: string | null
+          updated_at: string
+          work_mode: string | null
+        }
+        Insert: {
+          achievements?: string | null
+          avatar_url?: string | null
+          branch?: string | null
+          cgpa?: string | null
+          city?: string | null
+          college?: string | null
+          country?: string | null
+          created_at?: string
+          current_year?: string | null
+          degree?: string | null
+          experience_level?: string | null
+          full_name?: string | null
+          graduation_year?: string | null
+          id: string
+          interests?: string[]
+          notify_deadlines?: boolean
+          notify_email?: boolean
+          onboarding_completed?: boolean
+          plan?: string
+          preferred_industry?: string | null
+          preferred_types?: string[]
+          profile_public?: boolean
+          projects?: string | null
+          resume_name?: string | null
+          resume_url?: string | null
+          skills?: string[]
+          target_role?: string | null
+          updated_at?: string
+          work_mode?: string | null
+        }
+        Update: {
+          achievements?: string | null
+          avatar_url?: string | null
+          branch?: string | null
+          cgpa?: string | null
+          city?: string | null
+          college?: string | null
+          country?: string | null
+          created_at?: string
+          current_year?: string | null
+          degree?: string | null
+          experience_level?: string | null
+          full_name?: string | null
+          graduation_year?: string | null
+          id?: string
+          interests?: string[]
+          notify_deadlines?: boolean
+          notify_email?: boolean
+          onboarding_completed?: boolean
+          plan?: string
+          preferred_industry?: string | null
+          preferred_types?: string[]
+          profile_public?: boolean
+          projects?: string | null
+          resume_name?: string | null
+          resume_url?: string | null
+          skills?: string[]
+          target_role?: string | null
+          updated_at?: string
+          work_mode?: string | null
+        }
+        Relationships: []
+      }
+      saved_opportunities: {
+        Row: {
+          created_at: string
+          id: string
+          opportunity_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          opportunity_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          opportunity_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_opportunities_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "student"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +441,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "student"],
+    },
   },
 } as const
