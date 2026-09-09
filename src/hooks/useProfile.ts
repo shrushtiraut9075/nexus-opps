@@ -156,17 +156,23 @@ export function useUpsertApplication() {
       notes?: string;
       nextAction?: string;
     }) => {
-      const { error } = await supabase.from("applications").upsert(
-        {
-          user_id: user!.id,
-          opportunity_id: opportunityId,
-          status,
-          ...(notes !== undefined ? { notes } : {}),
-          ...(nextAction !== undefined ? { next_action: nextAction } : {}),
-          updated_at: new Date().toISOString(),
-        },
-        { onConflict: "user_id,opportunity_id" },
-      );
+      const patch = {
+        status,
+        ...(notes !== undefined ? { notes } : {}),
+        ...(nextAction !== undefined ? { next_action: nextAction } : {}),
+        updated_at: new Date().toISOString(),
+      };
+      const { data: existing } = await supabase
+        .from("applications")
+        .select("id")
+        .eq("user_id", user!.id)
+        .eq("opportunity_id", opportunityId)
+        .maybeSingle();
+      const { error } = existing
+        ? await supabase.from("applications").update(patch).eq("id", existing.id)
+        : await supabase
+            .from("applications")
+            .insert({ user_id: user!.id, opportunity_id: opportunityId, ...patch });
       if (error) throw error;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["applications"] }),
