@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
 import { useAuth } from "@/hooks/useAuth";
 import { useIsAdmin, useNotifications, useProfile } from "@/hooks/useProfile";
+import { PublicLayout, PageHeader } from "./PublicLayout";
 
 const NAV = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -149,5 +150,36 @@ export function AppLayout({
         <main className="mx-auto w-full max-w-6xl flex-1 p-4 sm:p-6">{children}</main>
       </div>
     </div>
+  );
+}
+
+/** Renders the student portal shell when signed in, and the public site shell otherwise. */
+export function AutoLayout({
+  title,
+  subtitle,
+  children,
+}: {
+  title: string;
+  subtitle?: string;
+  children: ReactNode;
+}) {
+  const { user, loading } = useAuth();
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center text-sm text-muted-foreground">Loading…</div>
+    );
+  }
+  if (user) {
+    return (
+      <AppLayout title={title} {...(subtitle ? { subtitle } : {})}>
+        {children}
+      </AppLayout>
+    );
+  }
+  return (
+    <PublicLayout>
+      <PageHeader title={title} {...(subtitle ? { subtitle } : {})} />
+      <div className="mx-auto w-full max-w-7xl p-4 sm:p-6">{children}</div>
+    </PublicLayout>
   );
 }
