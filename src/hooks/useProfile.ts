@@ -140,3 +140,66 @@ export function useNotifications() {
     },
   });
 }
+
+export function useUpsertApplication() {
+  const { user } = useAuth();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      opportunityId,
+      status,
+      notes,
+      nextAction,
+    }: {
+      opportunityId: string;
+      status: string;
+      notes?: string;
+      nextAction?: string;
+    }) => {
+      const patch = {
+        status,
+        ...(notes !== undefined ? { notes } : {}),
+        ...(nextAction !== undefined ? { next_action: nextAction } : {}),
+        updated_at: new Date().toISOString(),
+      };
+      const { data: existing } = await supabase
+        .from("applications")
+        .select("id")
+        .eq("user_id", user!.id)
+        .eq("opportunity_id", opportunityId)
+        .maybeSingle();
+      const { error } = existing
+        ? await supabase.from("applications").update(patch).eq("id", existing.id)
+        : await supabase
+            .from("applications")
+            .insert({ user_id: user!.id, opportunity_id: opportunityId, ...patch });
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["applications"] }),
+  });
+}
+
+export function useDeleteApplication() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("applications").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["applications"] }),
+  });
+}
+
+export function useMarkNotifications() {
+  const { user } = useAuth();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id?: string) => {
+      let q = supabase.from("notifications").update({ is_read: true }).eq("user_id", user!.id);
+      if (id) q = q.eq("id", id);
+      const { error } = await q;
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["notifications"] }),
+  });
+}
