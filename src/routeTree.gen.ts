@@ -11,13 +11,20 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApplicationsRouteImport } from './routes/applications'
+import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DeadlinesRouteImport } from './routes/deadlines'
+import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RecommendedRouteImport } from './routes/recommended'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as ResumeAnalyzerRouteImport } from './routes/resume-analyzer'
+import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as SavedRouteImport } from './routes/saved'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SkillGapRouteImport } from './routes/skill-gap'
 import { Route as OpportunitiesIndexRouteImport } from './routes/opportunities.index'
 import { Route as OpportunitiesIdRouteImport } from './routes/opportunities.$id'
 
@@ -29,6 +36,11 @@ const IndexRoute = IndexRouteImport.update({
 const ApplicationsRoute = ApplicationsRouteImport.update({
   id: '/applications',
   path: '/applications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssistantRoute = AssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -46,9 +58,19 @@ const DeadlinesRoute = DeadlinesRouteImport.update({
   path: '/deadlines',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecommendedRoute = RecommendedRouteImport.update({
@@ -61,9 +83,29 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResumeAnalyzerRoute = ResumeAnalyzerRouteImport.update({
+  id: '/resume-analyzer',
+  path: '/resume-analyzer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoadmapRoute = RoadmapRouteImport.update({
+  id: '/roadmap',
+  path: '/roadmap',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SavedRoute = SavedRouteImport.update({
   id: '/saved',
   path: '/saved',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SkillGapRoute = SkillGapRouteImport.update({
+  id: '/skill-gap',
+  path: '/skill-gap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpportunitiesIndexRoute = OpportunitiesIndexRouteImport.update({
@@ -80,26 +122,40 @@ const OpportunitiesIdRoute = OpportunitiesIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/applications': typeof ApplicationsRoute
+  '/assistant': typeof AssistantRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
   '/deadlines': typeof DeadlinesRoute
+  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
+  '/profile': typeof ProfileRoute
   '/recommended': typeof RecommendedRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/resume-analyzer': typeof ResumeAnalyzerRoute
+  '/roadmap': typeof RoadmapRoute
   '/saved': typeof SavedRoute
+  '/settings': typeof SettingsRoute
+  '/skill-gap': typeof SkillGapRoute
   '/opportunities/$id': typeof OpportunitiesIdRoute
   '/opportunities/': typeof OpportunitiesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/applications': typeof ApplicationsRoute
+  '/assistant': typeof AssistantRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
   '/deadlines': typeof DeadlinesRoute
+  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
+  '/profile': typeof ProfileRoute
   '/recommended': typeof RecommendedRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/resume-analyzer': typeof ResumeAnalyzerRoute
+  '/roadmap': typeof RoadmapRoute
   '/saved': typeof SavedRoute
+  '/settings': typeof SettingsRoute
+  '/skill-gap': typeof SkillGapRoute
   '/opportunities/$id': typeof OpportunitiesIdRoute
   '/opportunities': typeof OpportunitiesIndexRoute
 }
@@ -107,13 +163,20 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/applications': typeof ApplicationsRoute
+  '/assistant': typeof AssistantRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
   '/deadlines': typeof DeadlinesRoute
+  '/notifications': typeof NotificationsRoute
   '/onboarding': typeof OnboardingRoute
+  '/profile': typeof ProfileRoute
   '/recommended': typeof RecommendedRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/resume-analyzer': typeof ResumeAnalyzerRoute
+  '/roadmap': typeof RoadmapRoute
   '/saved': typeof SavedRoute
+  '/settings': typeof SettingsRoute
+  '/skill-gap': typeof SkillGapRoute
   '/opportunities/$id': typeof OpportunitiesIdRoute
   '/opportunities/': typeof OpportunitiesIndexRoute
 }
@@ -122,39 +185,60 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/applications'
+    | '/assistant'
     | '/auth'
     | '/dashboard'
     | '/deadlines'
+    | '/notifications'
     | '/onboarding'
+    | '/profile'
     | '/recommended'
     | '/reset-password'
+    | '/resume-analyzer'
+    | '/roadmap'
     | '/saved'
+    | '/settings'
+    | '/skill-gap'
     | '/opportunities/$id'
     | '/opportunities/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/applications'
+    | '/assistant'
     | '/auth'
     | '/dashboard'
     | '/deadlines'
+    | '/notifications'
     | '/onboarding'
+    | '/profile'
     | '/recommended'
     | '/reset-password'
+    | '/resume-analyzer'
+    | '/roadmap'
     | '/saved'
+    | '/settings'
+    | '/skill-gap'
     | '/opportunities/$id'
     | '/opportunities'
   id:
     | '__root__'
     | '/'
     | '/applications'
+    | '/assistant'
     | '/auth'
     | '/dashboard'
     | '/deadlines'
+    | '/notifications'
     | '/onboarding'
+    | '/profile'
     | '/recommended'
     | '/reset-password'
+    | '/resume-analyzer'
+    | '/roadmap'
     | '/saved'
+    | '/settings'
+    | '/skill-gap'
     | '/opportunities/$id'
     | '/opportunities/'
   fileRoutesById: FileRoutesById
@@ -162,13 +246,20 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ApplicationsRoute: typeof ApplicationsRoute
+  AssistantRoute: typeof AssistantRoute
   AuthRoute: typeof AuthRoute
   DashboardRoute: typeof DashboardRoute
   DeadlinesRoute: typeof DeadlinesRoute
+  NotificationsRoute: typeof NotificationsRoute
   OnboardingRoute: typeof OnboardingRoute
+  ProfileRoute: typeof ProfileRoute
   RecommendedRoute: typeof RecommendedRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  ResumeAnalyzerRoute: typeof ResumeAnalyzerRoute
+  RoadmapRoute: typeof RoadmapRoute
   SavedRoute: typeof SavedRoute
+  SettingsRoute: typeof SettingsRoute
+  SkillGapRoute: typeof SkillGapRoute
   OpportunitiesIdRoute: typeof OpportunitiesIdRoute
   OpportunitiesIndexRoute: typeof OpportunitiesIndexRoute
 }
@@ -187,6 +278,13 @@ declare module '@tanstack/react-router' {
       path: '/applications'
       fullPath: '/applications'
       preLoaderRoute: typeof ApplicationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assistant': {
+      id: '/assistant'
+      path: '/assistant'
+      fullPath: '/assistant'
+      preLoaderRoute: typeof AssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -210,11 +308,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DeadlinesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/onboarding': {
       id: '/onboarding'
       path: '/onboarding'
       fullPath: '/onboarding'
       preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recommended': {
@@ -231,11 +343,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/resume-analyzer': {
+      id: '/resume-analyzer'
+      path: '/resume-analyzer'
+      fullPath: '/resume-analyzer'
+      preLoaderRoute: typeof ResumeAnalyzerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roadmap': {
+      id: '/roadmap'
+      path: '/roadmap'
+      fullPath: '/roadmap'
+      preLoaderRoute: typeof RoadmapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/saved': {
       id: '/saved'
       path: '/saved'
       fullPath: '/saved'
       preLoaderRoute: typeof SavedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/skill-gap': {
+      id: '/skill-gap'
+      path: '/skill-gap'
+      fullPath: '/skill-gap'
+      preLoaderRoute: typeof SkillGapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/opportunities/': {
@@ -258,13 +398,20 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ApplicationsRoute: ApplicationsRoute,
+  AssistantRoute: AssistantRoute,
   AuthRoute: AuthRoute,
   DashboardRoute: DashboardRoute,
   DeadlinesRoute: DeadlinesRoute,
+  NotificationsRoute: NotificationsRoute,
   OnboardingRoute: OnboardingRoute,
+  ProfileRoute: ProfileRoute,
   RecommendedRoute: RecommendedRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  ResumeAnalyzerRoute: ResumeAnalyzerRoute,
+  RoadmapRoute: RoadmapRoute,
   SavedRoute: SavedRoute,
+  SettingsRoute: SettingsRoute,
+  SkillGapRoute: SkillGapRoute,
   OpportunitiesIdRoute: OpportunitiesIdRoute,
   OpportunitiesIndexRoute: OpportunitiesIndexRoute,
 }
