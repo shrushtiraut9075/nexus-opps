@@ -135,7 +135,9 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/dashboard" });
+    const { data } = await supabase.auth.getUser();
+    if (data.user) await goAfterLogin(data.user.id);
+    else navigate({ to: "/dashboard", replace: true });
   };
 
   const resend = async () => {
