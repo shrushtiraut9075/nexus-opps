@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Loader2, Mail } from "lucide-react";
@@ -14,10 +14,11 @@ import { Logo } from "@/components/Logo";
 type Mode = "login" | "signup" | "forgot";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: Record<string, unknown>): { mode?: Mode | undefined } => ({
+  validateSearch: (search: Record<string, unknown>): { mode?: Mode | undefined; verified?: boolean | undefined } => ({
     mode: (["login", "signup", "forgot"] as const).includes(search["mode"] as Mode)
       ? (search["mode"] as Mode)
       : undefined,
+    verified: search["verified"] === "1" || search["verified"] === true ? true : undefined,
   }),
   head: () => ({
     meta: [
