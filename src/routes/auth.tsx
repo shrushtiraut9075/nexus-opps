@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Loader2, Mail } from "lucide-react";
@@ -14,10 +14,11 @@ import { Logo } from "@/components/Logo";
 type Mode = "login" | "signup" | "forgot";
 
 export const Route = createFileRoute("/auth")({
-  validateSearch: (search: Record<string, unknown>): { mode?: Mode | undefined } => ({
+  validateSearch: (search: Record<string, unknown>): { mode?: Mode | undefined; verified?: boolean | undefined } => ({
     mode: (["login", "signup", "forgot"] as const).includes(search["mode"] as Mode)
       ? (search["mode"] as Mode)
       : undefined,
+    verified: search["verified"] === "1" || search["verified"] === true ? true : undefined,
   }),
   head: () => ({
     meta: [
@@ -31,9 +32,34 @@ export const Route = createFileRoute("/auth")({
 });
 
 function AuthPage() {
-  const { mode: initialMode } = Route.useSearch();
+  const { mode: initialMode, verified } = Route.useSearch();
   const navigate = useNavigate();
   const [mode, setMode] = useState<Mode>(initialMode ?? "login");
+  const verifiedHandled = useRef(false);
+
+  // Arriving from the email verification link: confirm, clear the temporary
+  // session created by the link, and ask the user to log in once.
+  useEffect(() => {
+    if (!verified || verifiedHandled.current) return;
+    verifiedHandled.current = true;
+    (async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) await supabase.auth.signOut();
+      setMode("login");
+      toast.success("Email verified successfully. Please log in to continue.");
+      navigate({ to: "/auth", search: { mode: "login" }, replace: true });
+    })();
+  }, [verified, navigate]);
+
+  const goAfterLogin = async (userId: string) => {
+    const { data } = await supabase
+      .from("profiles")
+      .select("onboarding_completed")
+      .eq("id", userId)
+      .maybeSingle();
+    navigate({ to: data?.onboarding_completed ? "/dashboard" : "/onboarding", replace: true });
+  };
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -66,20 +92,23 @@ function AuthPage() {
     setLoading(true);
     try {
       if (mode === "login") {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success("Welcome back!");
-        navigate({ to: "/dashboard" });
+        if (data.user) await goAfterLogin(data.user.id);
       } else if (mode === "signup") {
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: window.location.origin, data: { full_name: fullName } },
+          options: {
+            emailRedirectTo: `${window.location.origin}/auth?verified=1`,
+            data: { full_name: fullName },
+          },
         });
         if (error) throw error;
         if (data.session) {
           toast.success("Account created");
-          navigate({ to: "/onboarding" });
+          navigate({ to: "/onboarding", replace: true });
         } else {
           setSent("verify");
         }
@@ -106,7 +135,9 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/dashboard" });
+    const { data } = await supabase.auth.getUser();
+    if (data.user) await goAfterLogin(data.user.id);
+    else navigate({ to: "/dashboard", replace: true });
   };
 
   const resend = async () => {
