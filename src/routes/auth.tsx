@@ -92,20 +92,23 @@ function AuthPage() {
     setLoading(true);
     try {
       if (mode === "login") {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success("Welcome back!");
-        navigate({ to: "/dashboard" });
+        if (data.user) await goAfterLogin(data.user.id);
       } else if (mode === "signup") {
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
-          options: { emailRedirectTo: window.location.origin, data: { full_name: fullName } },
+          options: {
+            emailRedirectTo: `${window.location.origin}/auth?verified=1`,
+            data: { full_name: fullName },
+          },
         });
         if (error) throw error;
         if (data.session) {
           toast.success("Account created");
-          navigate({ to: "/onboarding" });
+          navigate({ to: "/onboarding", replace: true });
         } else {
           setSent("verify");
         }
